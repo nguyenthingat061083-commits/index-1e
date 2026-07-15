@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hải — Menu</title>
+<style>
+/* ===== GIỮ NGUYÊN CODE GỐC ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+body {
+    background: #1e1f25;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.app {
+    width: 1100px;
+    height: 650px;
+    background: #11141a;
+    border-radius: 18px;
+    overflow: hidden;
+    display: flex;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, .45);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+.sidebar {
+    width: 240px;
+    background: #0d1015;
+    border-right: 1px solid rgba(255, 255, 255, .05);
+    padding-top: 20px;
+    flex-shrink: 0;
+}
+.logo {
+    color: #fff;
+    font-size: 22px;
+    font-weight: 700;
+    padding: 25px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.logo i {
+    color: var(--accent, #ff6b2c);
+}
+.nav-item {
+    color: #8e96a3;
+    padding: 18px 25px;
+    cursor: pointer;
+    transition: .25s;
+    border-left: 4px solid transparent;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.nav-item:hover {
+    background: #161b23;
+    color: #fff;
+}
+.nav-item.active {
+    color: #fff;
+    background: #161b23;
+    border-left-color: var(--accent, #ff6b2c);
+}
+.nav-item i {
+    width: 20px;
+    color: var(--accent, #ff6b2c);
+}
+.content {
+    flex: 1;
+    padding: 30px;
+    overflow: auto;
+}
+.tab {
+    display: none;
+}
+.tab.active {
+    display: block;
+}
+
+/* ===== CARD ===== */
+.card {
+    background: #181d25;
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+.card h3 {
+    color: white;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.card h3 i {
+    color: var(--accent, #ff6b2c);
+}
+.card p {
+    color: #9da5b4;
+    line-height: 1.6;
+}
+
+/* ===== ROW ===== */
+.row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 15px 0;
+}
+.row .label {
+    color: #ccd6f6;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.row .label i {
+    color: var(--accent, #ff6b2c);
+    width: 22px;
+}
+
+/* ===== SWITCH ===== */
+.switch {
+    position: relative;
+    width: 55px;
+    height: 30px;
+    flex-shrink: 0;
+}
+.switch input {
+    display: none;
+}
+.slider {
+    position: absolute;
+    inset: 0;
+    background: #444;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: .3s;
+}
+.slider::before {
+    content: "";
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    left: 3px;
+    top: 3px;
+    border-radius: 50%;
+    background: white;
+    transition: .3s;
+}
+input:checked + .slider {
+    background: var(--accent, #ff6b2c);
+}
+input:checked + .slider::before {
+    transform: translateX(25px);
+}
+
+/* ===== SELECT ===== */
+select {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    background: #232a35;
+    color: white;
+    margin-top: 10px;
+    cursor: pointer;
+    font-size: 14px;
+}
+select:focus {
+    outline: 2px solid var(--accent, #ff6b2c);
+}
+
+/* ===== BUTTON ===== */
+button {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 10px;
+    background: var(--accent, #ff6b2c);
+    color: white;
+    cursor: pointer;
+    margin-right: 10px;
+    transition: 0.2s;
+    font-weight: 600;
+}
+button:hover {
+    opacity: 0.85;
+    transform: scale(0.97);
+}
+
+/* ===== CHECKBOX GROUP ===== */
+.checkbox-group {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+.checkbox-item {
+    background: rgba(255, 255, 255, 0.06);
+    padding: 4px 12px;
+    border-radius: 14px;
+    font-size: 12px;
+    color: #ccd6f6;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    cursor: pointer;
+    transition: 0.2s;
+}
+.checkbox-item.active {
+    background: var(--accent, #ff6b2c);
+    color: #0b0d15;
+}
+
+/* ===== COLOR PICKER ===== */
+.color-picker {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin: 10px 0;
+}
+.color-dot {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.15);
+    cursor: pointer;
+    transition: 0.2s;
+}
+.color-dot:hover {
+    transform: scale(1.1);
+}
+.color-dot.active {
+    border-color: #fff;
+    box-shadow: 0 0 16px currentColor;
+}
+
+/* ===== INFO TEXT ===== */
+.info-text {
+    font-size: 12px;
+    color: #8892b0;
+    line-height: 1.6;
+    margin: 8px 0;
+    font-family: monospace;
+}
+
+/* ===== WARNING ===== */
+.warn-box {
+    background: rgba(255, 23, 68, 0.08);
+    border-radius: 10px;
+    padding: 8px 12px;
+    margin-bottom: 12px;
+    border-left: 3px solid #ff1744;
+    color: #ff1744;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+/* ===== HP BAR ===== */
+.hp-bar {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 10px;
+    padding: 6px 14px;
+    margin-bottom: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.04);
+}
+.hp-bar .label {
+    color: #8892b0;
+    font-size: 13px;
+    font-weight: 600;
+}
+.hp-bar .value {
+    color: #00e676;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+/* ===== SLIDER FOV ===== */
+.slider-fov {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex: 1;
+}
+.slider-fov input[type="range"] {
+    -webkit-appearance: none;
+    flex: 1;
+    height: 4px;
+    background: #232a35;
+    border-radius: 10px;
+    outline: none;
+    cursor: pointer;
+}
+.slider-fov input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    background: var(--accent, #ff6b2c);
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid #11141a;
+    box-shadow: 0 0 8px var(--accent, #ff6b2c);
+}
+.slider-fov .value {
+    color: #fff;
+    font-weight: 700;
+    font-size: 15px;
+    min-width: 48px;
+    text-align: right;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+    .app {
+        flex-direction: column;
+        height: auto;
+        width: 100%;
+        border-radius: 12px;
+        margin: 10px;
+    }
+    .sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        padding-top: 10px;
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .logo {
+        width: 100%;
+        padding: 15px 20px;
+    }
+    .nav-item {
+        padding: 12px 20px;
+        border-left: none;
+        border-bottom: 2px solid transparent;
+        flex: 1;
+        min-width: 80px;
+        justify-content: center;
+    }
+    .nav-item.active {
+        border-left-color: transparent;
+        border-bottom-color: var(--accent, #ff6b2c);
+    }
+    .content {
+        padding: 16px;
+    }
+}
+@media (max-width: 480px) {
+    .nav-item {
+        font-size: 12px;
+        padding: 10px 12px;
+        min-width: 60px;
+    }
+    .nav-item i {
+        margin-right: 0;
+    }
+    .card {
+        padding: 14px;
+    }
+    .row {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    .slider-fov {
+        width: 100%;
+    }
+}
+</style>
+</head>
+<body>
+
+<div class="app" id="appContainer">
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <div class="logo"><i class="fas fa-crosshairs"></i> Hải</div>
+        <div class="nav-item active" data-tab="aimbot"><i class="fas fa-crosshairs"></i> Aimbot</div>
+        <div class="nav-item" data-tab="visuals"><i class="fas fa-eye"></i> Visuals</div>
+        <div class="nav-item" data-tab="misc"><i class="fas fa-cogs"></i> Misc</div>
+        <div class="nav-item" data-tab="settings"><i class="fas fa-sliders-h"></i> Settings</div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="content">
+
+        <!-- ===== TAB AIMBOT ===== -->
+        <div id="aimbot" class="tab active">
+            <div class="card">
+                <h3><i class="fas fa-bullseye"></i> AIMBOT</h3>
+                <p>Automatically aim at enemies.</p>
+
+                <div class="row">
+                    <span class="label"><i class="fas fa-power-off"></i> Master switch</span>
+                    <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+                </div>
+
+                <div class="row">
+                    <span class="label"><i class="fas fa-flag"></i> Aiming method</span>
+                    <select style="width:auto;min-width:150px;"><option>Silent aimbot</option><option>Normal</option></select>
+                </div>
+
+                <!-- ===== THANH KÉO FOV ===== -->
+                <div class="row">
+                    <span class="label"><i class="fas fa-expand"></i> FOV Range</span>
+                    <div class="slider-fov">
+                        <input type="range" min="0" max="360" value="120" id="fovSlider" />
+                        <span class="value" id="fovDisplay">120°</span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <span class="label"><i class="fas fa-circle"></i> Show FOV circle</span>
+                    <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+                </div>
+
+                <div class="row">
+                    <span class="label"><i class="fas fa-user-slash"></i> Ignore types</span>
+                    <div class="checkbox-group">
+                        <span class="checkbox-item active" onclick="toggleCheck(this)">Invisible</span>
+                        <span class="checkbox-item active" onclick="toggleCheck(this)">Knocked</span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <span class="label"><i class="fas fa-user-injured"></i> Hitbox</span>
+                    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+                        <select style="width:auto;min-width:100px;"><option>Head</option><option>Neck</option><option>Chest</option></select>
+                        <span class="checkbox-item active" onclick="toggleCheck(this)">Randomized</span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <span class="label"><i class="fas fa-arrow-up"></i> Target priority</span>
+                    <select style="width:auto;min-width:160px;"><option>Closest to crosshair</option><option>Closest</option><option>Lowest health</option></select>
+                </div>
+
+                <div style="margin-top:16px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.05);">
+                    <span style="color:#8892b0;font-size:12px;"><i class="fas fa-bolt" style="color:var(--accent,#ff6b2c);"></i> Cài đặt nhanh</span>
+                    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px;">
+                        <span class="checkbox-item active" onclick="toggleCheck(this)">Headshot</span>
+                        <span class="checkbox-item active" onclick="toggleCheck(this)">Aggressive</span>
+                        <span class="checkbox-item" onclick="toggleCheck(this)">Stealth</span>
+                        <span class="checkbox-item" onclick="toggleCheck(this)">Balanced</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== TAB VISUALS ===== -->
+        <div id="visuals" class="tab">
+            <div class="card">
+                <h3><i class="fas fa-eye"></i> VISUALS</h3>
+                <p>Visual improvements.</p>
+
+                <h4 style="color:#ccd6f6;font-size:14px;margin:12px 0 8px;"><i class="fas fa-user"></i> Enemy ESP</h4>
+
+                <div class="row"><span class="label"><i class="fas fa-vector-square"></i> Box</span><label class="switch"><input type="checkbox" checked><span class="slider"></span></label></div>
+                <div class="row"><span class="label"><i class="fas fa-heartbeat"></i> Health</span><label class="switch"><input type="checkbox" checked><span class="slider"></span></label></div>
+                <div class="row"><span class="label"><i class="fas fa-font"></i> Nickname</span><label class="switch"><input type="checkbox" checked><span class="slider"></span></label></div>
+                <div class="row"><span class="label"><i class="fas fa-ruler"></i> Distance</span><label class="switch"><input type="checkbox" checked><span class="slider"></span></label></div>
+                <div class="row"><span class="label"><i class="fas fa-arrows-alt-h"></i> Skeleton</span><label class="switch"><input type="checkbox"><span class="slider"></span></label></div>
+                <div class="row"><span class="label"><i class="fas fa-fire"></i> Line fire</span><label class="switch"><input type="checkbox"><span class="slider"></span></label></div>
+
+                <h4 style="color:#ccd6f6;font-size:14px;margin:16px 0 8px;"><i class="fas fa-users"></i> Nearby enemies count</h4>
+
+                <div class="row"><span class="label"><i class="fas fa-palette"></i> Counter text color</span><input type="color" value="#ff6b2c" style="width:30px;height:30px;background:transparent;border:none;cursor:pointer;" /></div>
+                <div class="row"><span class="label"><i class="fas fa-font"></i> Counter text size</span><div style="display:flex;align-items:center;gap:10px;"><input type="range" min="10" max="40" value="25" style="width:100px;" /><span style="color:#fff;font-size:13px;">25px</span></div></div>
+            </div>
+        </div>
+
+        <!-- ===== TAB MISC ===== -->
+        <div id="misc" class="tab">
+            <div class="card">
+                <h3><i class="fas fa-cogs"></i> MISC</h3>
+                <p>Game enhancements.</p>
+
+                <div class="warn-box">⚠️ These features are only for fun and may be unsafe. Use them at your own risk!</div>
+
+                <div class="row"><span class="label"><i class="fas fa-cloud"></i> No fog</span><label class="switch"><input type="checkbox"><span class="slider"></span></label></div>
+                <div class="row"><span class="label"><i class="fas fa-crosshairs"></i> No weapon spread</span><label class="switch"><input type="checkbox"><span class="slider"></span></label></div>
+                <div class="row"><span class="label"><i class="fas fa-bolt"></i> Instant loot</span><label class="switch"><input type="checkbox"><span class="slider"></span></label></div>
+                <div class="row"><span class="label"><i class="fas fa-sync-alt"></i> Inverted IceWall</span><label class="switch"><input type="checkbox"><span class="slider"></span></label></div>
+                <div class="row"><span class="label"><i class="fas fa-arrows-alt-h"></i> Aspect ratio</span><label class="switch"><input type="checkbox"><span class="slider"></span></label></div>
+                <div class="row"><span class="label"><i class="fas fa-fighter-jet"></i> Auto-fire</span><label class="switch"><input type="checkbox"><span class="slider"></span></label></div>
+            </div>
+        </div>
+
+        <!-- ===== TAB SETTINGS ===== -->
+        <div id="settings" class="tab">
+            <div class="card">
+                <h3><i class="fas fa-sliders-h"></i> SETTINGS</h3>
+                <p>Configure options.</p>
+
+                <div class="info-text">1.53 (f98165167e9000a6) (12739 | 7fffffbffff)<br />(57|6|14|15|10|8|6) | Last Heartbeat Result: 0</div>
+
+                <h4 style="color:#ccd6f6;font-size:14px;margin:12px 0 6px;"><i class="fas fa-palette"></i> Accent color</h4>
+                <div class="color-picker">
+                    <div class="color-dot active" style="background:#ff6b2c;" data-color="#ff6b2c" onclick="setTheme(this)"></div>
+                    <div class="color-dot" style="background:#00e5ff;" data-color="#00e5ff" onclick="setTheme(this)"></div>
+                    <div class="color-dot" style="background:#d500f9;" data-color="#d500f9" onclick="setTheme(this)"></div>
+                    <div class="color-dot" style="background:#76ff03;" data-color="#76ff03" onclick="setTheme(this)"></div>
+                    <div class="color-dot" style="background:#ffea00;" data-color="#ffea00" onclick="setTheme(this)"></div>
+                    <div class="color-dot" style="background:#ffffff;" data-color="#ffffff" onclick="setTheme(this)"></div>
+                </div>
+
+                <div class="info-text">Subscription time left: 24 days, 3 hours, 16 minutes, 3 seconds<br />Build at Jan 20 2026 22:05:22 - 1.7.1 for game version 1.120.X</div>
+
+                <div class="row"><span class="label"><i class="fas fa-eye-slash"></i> Streamproof</span><label class="switch"><input type="checkbox"><span class="slider"></span></label></div>
+
+                <div class="row"><span class="label"><i class="fas fa-globe"></i> Language</span>
+                    <select id="langSelect" style="width:auto;min-width:140px;">
+                        <option value="en">English</option>
+                        <option value="vi">Vietnamese</option>
+                    </select>
+                </div>
+
+                <div class="row"><span class="label"><i class="fas fa-microphone-alt"></i> Enable silent mode</span><label class="switch"><input type="checkbox"><span class="slider"></span></label></div>
+                <div class="row"><span class="label"><i class="fas fa-save"></i> Save settings</span><label class="switch"><input type="checkbox"><span class="slider"></span></label></div>
+                <div class="row"><span class="label"><i class="fas fa-upload"></i> Load settings</span><label class="switch"><input type="checkbox"><span class="slider"></span></label></div>
+            </div>
+
+            <div class="hp-bar">
+                <span class="label"><i class="fas fa-heartbeat"></i> HP</span>
+                <span class="value">200/200</span>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    // ===== FONT AWESOME =====
+    const faLink = document.createElement('link');
+    faLink.rel = 'stylesheet';
+    faLink.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css';
+    document.head.appendChild(faLink);
+
+    // ===== TABS =====
+    const navItems = document.querySelectorAll('.nav-item');
+    navItems.forEach(item => {
+        item.addEventListener('click', function() {
+            navItems.forEach(i => i.classList.remove('active'));
+            this.classList.add('active');
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.getElementById(this.dataset.tab).classList.add('active');
+        });
+    });
+
+    // ===== TOGGLE CHECK =====
+    function toggleCheck(el) {
+        el.classList.toggle('active');
+    }
+
+    // ===== FOV SLIDER =====
+    const fovSlider = document.getElementById('fovSlider');
+    const fovDisplay = document.getElementById('fovDisplay');
+    if (fovSlider) {
+        fovSlider.addEventListener('input', function() {
+            fovDisplay.textContent = this.value + '°';
+        });
+    }
+
+    // ===== ĐỔI MÀU THEME =====
+    function setTheme(el) {
+        const color = el.dataset.color;
+        document.querySelectorAll('.color-dot').forEach(d => d.classList.remove('active'));
+        el.classList.add('active');
+
+        const app = document.getElementById('appContainer');
+        app.style.setProperty('--accent', color);
+
+        document.querySelectorAll('.nav-item.active').forEach(n => {
+            n.style.borderLeftColor = color;
+        });
+        document.querySelectorAll('.switch input:checked + .slider').forEach(s => {
+            s.style.background = color;
+        });
+        document.querySelectorAll('.logo i, .nav-item i, .card h3 i, .row .label i').forEach(el => {
+            el.style.color = color;
+        });
+        document.querySelectorAll('input[type="range"]::-webkit-slider-thumb').forEach(t => {
+            t.style.background = color;
+        });
+        document.querySelectorAll('select:focus').forEach(s => {
+            s.style.outlineColor = color;
+        });
+    }
+
+    // ===== ĐỔI NGÔN NGỮ =====
+    document.getElementById('langSelect').addEventListener('change', function() {
+        const lang = this.value;
+        const isVi = lang === 'vi';
+
+        const dict = {
+            'nav-item': {
+                en: ['Aimbot', 'Visuals', 'Misc', 'Settings'],
+                vi: ['Aimbot', 'Hiển thị', 'Tùy chỉnh', 'Cài đặt']
+            },
+            'h3': {
+                en: ['AIMBOT', 'VISUALS', 'MISC', 'SETTINGS'],
+                vi: ['AIMBOT', 'HIỂN THỊ', 'TÙY CHỈNH', 'CÀI ĐẶT']
+            },
+            'p': {
+                en: ['Automatically aim at enemies.', 'Visual improvements.', 'Game enhancements.', 'Configure options.'],
+                vi: ['Tự động ngắm vào kẻ địch.', 'Cải thiện hiển thị.', 'Nâng cao trò chơi.', 'Tùy chỉnh cấu hình.']
+            },
+            'lbl': {
+                en: ['Master switch', 'Aiming method', 'FOV Range', 'Show FOV circle', 'Ignore types', 'Hitbox', 'Target priority', 'Cài đặt nhanh'],
+                vi: ['Công tắc chính', 'Phương thức ngắm', 'Phạm vi FOV', 'Hiển thị vòng FOV', 'Loại bỏ', 'Vùng trúng', 'Ưu tiên mục tiêu', 'Cài đặt nhanh']
+            }
+        };
+
+        // Cập nhật nav-item
+        document.querySelectorAll('.nav-item').forEach((el, i) => {
+            if (i < dict['nav-item'][lang].length) {
+                const text = dict['nav-item'][lang][i];
+                const icon = el.querySelector('i');
+                el.innerHTML = '';
+                if (icon) el.appendChild(icon);
+                el.appendChild(document.createTextNode(' ' + text));
+            }
+        });
+
+        // Cập nhật h3
+        document.querySelectorAll('.card h3').forEach((el, i) => {
+            if (i < dict['h3'][lang].length) {
+                const icon = el.querySelector('i');
+                el.innerHTML = '';
+                if (icon) el.appendChild(icon);
+                el.appendChild(document.createTextNode(' ' + dict['h3'][lang][i]));
+            }
+        });
+
+        // Cập nhật p
+        document.querySelectorAll('.card p').forEach((el, i) => {
+            if (i < dict['p'][lang].length) {
+                el.textContent = dict['p'][lang][i];
+            }
+        });
+
+        // Cập nhật label trong row (chỉ những label có class .label)
+        const labels = document.querySelectorAll('.row .label');
+        let idx = 0;
+        labels.forEach(el => {
+            const icon = el.querySelector('i');
+            const textNode = el.childNodes[1]; // text node after icon
+            if (idx < dict['lbl'][lang].length) {
+                const newText = dict['lbl'][lang][idx];
+                el.innerHTML = '';
+                if (icon) el.appendChild(icon);
+                el.appendChild(document.createTextNode(' ' + newText));
+                idx++;
+            }
+        });
+    });
+
+    // ===== KHỞI TẠO =====
+    document.getElementById('appContainer').style.setProperty('--accent', '#ff6b2c');
+</script>
+
+</body>
+</html>
